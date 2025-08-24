@@ -20,6 +20,8 @@ Este é um **tracker de progresso interativo** para te ajudar a acompanhar sua j
 
 ### 👉 [**b2b-tracker-br**](https://marcellaaricia.github.io/b2b-tracker-br/) 👈
 
+---
+
 ## ✨ **Características**
 
 ### 🎮 **Gamificação**
