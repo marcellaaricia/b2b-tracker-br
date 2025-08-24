@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Born2beRoot - Tracker de Progresso 🇧🇷</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #2d3748;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .progress-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .progress-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .progress-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .progress-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #4299e1;
+            margin-bottom: 10px;
+        }
+
+        .progress-label {
+            color: #666;
+            font-weight: 500;
+        }
+
+        .checklist-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #2d3748;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin: 10px 0;
+            background: #f7fafc;
+            border-radius: 10px;
+            border-left: 4px solid #e2e8f0;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .checklist-item:hover {
+            background: #edf2f7;
+            transform: translateX(5px);
+        }
+
+        .checklist-item.completed {
+            border-left-color: #48bb78;
+            background: #f0fff4;
+        }
+
+        .checklist-item.completed .item-text {
+            text-decoration: line-through;
+            color: #666;
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #cbd5e0;
+            border-radius: 50%;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox.checked {
+            background: #48bb78;
+            border-color: #48bb78;
+            color: white;
+        }
+
+        .item-text {
+            flex: 1;
+            font-weight: 500;
+        }
+
+        .item-description {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .reset-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #e53e3e;
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(229, 62, 62, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .reset-btn:hover {
+            background: #c53030;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(229, 62, 62, 0.4);
+        }
+
+        .warning {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+            color: #744210;
+        }
+
+        .warning strong {
+            color: #c05621;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .progress-overview {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🇧🇷 Born2beRoot - Tracker de Progresso</h1>
+            <p>Acompanhe seu progresso no projeto usando Debian 13 no Mac</p>
+            <div class="warning">
+                <strong>⚠️ Importante:</strong> Este tracker salva seu progresso localmente. Use-o como guia para seus estudos, não como substituto do aprendizado!
+            </div>
+        </div>
+
+        <div class="progress-overview">
+            <div class="progress-card">
+                <div class="progress-number" id="totalProgress">0%</div>
+                <div class="progress-label">Progresso Total</div>
+            </div>
+            <div class="progress-card">
+                <div class="progress-number" id="completedTasks">0</div>
+                <div class="progress-label">Tarefas Concluídas</div>
+            </div>
+            <div class="progress-card">
+                <div class="progress-number" id="remainingTasks">28</div>
+                <div class="progress-label">Tarefas Restantes</div>
+            </div>
+        </div>
+
+        <div class="checklist-section">
+            <h2 class="section-title">
+                🚀 Preparação do Ambiente
+            </h2>
+            <div class="checklist-item" data-task="1">
+                <div class="checkbox"></div>
+                <div>
+                    <div class="item-text">Download do Debian 13 ISO</div>
+                    <div class="item-description">Baixar a versão mais recente do Debian</div>
+                </div>
+            </div>
+            <div class="checklist-item" data-task="2">
+                <div class="checkbox"></div>
+                <div>
+                    <div class="item-text">Instalação do UTM no Mac</div>
+                    <div class="item-description">Configurar virtualizador para Mac</div>
+                </div>
+            </div>
+            <div class="checklist-item" data-task="3">
+                <div class="checkbox"></div>
+                <div>
+                    <div class="item-text">Criação da VM com configurações corretas</div>
+                    <div class="item-description">Nome: [login]42, RAM: 2GB, Storage: 20-30GB</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="checklist-section">
+            <h2 class="section-title">
+                💽 Instalação do Sistema
+            </h2>
+            <div class="checklist-item" data-task="4">
+                <div class="checkbox"></div>
+                <div>
+                    <div class="item-text">Boot da ISO e início da instalação</div>
+                    <div class="item-description">Escolher "Install" (não gráfico)</div>
+                </div>
+            </div>
+            <div class="checklist-item" data-task="5">
+                <div class="checkbox"></div>
+                <div>
+                    <div class="item-text">Configuração de hostname ([login]42)</div>
+                    <div class="item-description">Ex: joao42, maria42</div>
+                </div>
+            </div>
+            <div class="checklist-item" data-task="6">
+                <div class="checkbox"></div>
+                <div>
+                    <div class="item-text">Criação de usuários e senhas</div>
+                    <div class="item-description">Root + usuário normal com política de senha</div>
+                </div>
+            </div>
+            <div class="checklist-item" data-task="7">
+                <div class="checkbox"></div>
+                <div>
+                    <div class="item-text">Particionamento manual com LVM criptografado</div>
+                    <div class="item-description">/boot + LVM Group com múltiplas partições</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="checklist-section">
+            <h2 class="section-title">
+                🛠️ Configuração Pós-Instalação
+            </h2>
+            <div class="checklist-item" data-task="8">
+                <div class="checkbox"></div>
+                <div>
+                    <div class="item-text">Atualização do sistema</div>
+                    <div class="item-description">apt update && apt upgrade -y</div>
+                </div>
+            </div>
+            <div class="checklist-item" data-task="9">
+                <div class="checkbox"></div>
+                <div>
+                    <div class="item-text">Instalação e configuração do sudo</div>
+                    <div class="item-description">Adicionar usuário ao grupo sudo</div>
+                </div>
+            </div>
+            <div class="checklist-item" data-task="10">
+                <div class="checkbox"></div>
+                <div>
+                    <div class="item-text">Configuração do SSH na porta 4242</div>
+                    <div class="item-description">PermitRootLogin no</div>
+                </div>
+            </div>
+            <div class="checklist-item" data-task="11">
+                <div class="checkbox"></div>
+                <div>
+                    <div class="item-text">Configuração do firewall UFW</div>
+                    <div class="item-description">Apenas porta 4242 aberta</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="checklist-section">
+            <h2 class="section-title">
+                🔐 Políticas de Segurança
+            </h2>
+            <div class="checklist-item" data-task="12">
+                <div class="checkbox"></div>
+                <div>
+                    <div class="item-text">Instalação do libpam-pwquality</div>
+                    <div class="item-description">Para controle de políticas de senha</div>
+                </div>
+            </div>
+            <div class="checklist-item" data-task="13">
+                <div class="checkbox"></div>
+                <div>
+                    <div class="item-text">Configuração de /etc/pam.d/common-password</div>
+                    <div class="item-description">Critérios de complexidade de senha</div>
+                </div>
+            </div>
+            <div class="checklist-item" data-task="14">
+                <div class="checkbox"></div>
+                <div>
+                    <div class="item-text">Configuração de /etc/login.defs</div>
+                    <div class="item-description">Expiração: 30 dias, Min: 2 dias, Aviso: 7 dias</div>
+                </div>
+            </div>
+            <div class="checklist-item" data-task="15">
+                <div class="checkbox"></div>
+                <div>
+                    <div class="item-text">Aplicação das políticas aos usuários existentes</div>
+                    <div class="item-description">chage para root e usuário normal</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="checklist-section">
+            <h2 class="section-title">
+                ⚙️ Configuração Avançada do Sudo
+            </h2>
+            <div class="checklist-item" data-task="16">
+                <div class="checkbox"></div>
+                <div>
+                    <div class="item-text">Configuração do visudo</div>
+                    <div class="item-description">3 tentativas, mensagem customizada</div>
+                </div>
+            </div>
+            <div class="checklist-item" data-task="17">
+                <div class="checkbox"></div>
+                <div>
+                    <div class="item-text">Configuração de logs do sudo</div>
+                    <div class="item-description">/var/log/sudo/ com input/output</div>
+                </div>
+            </div>
+            <div class="checklist-item" data-task="18">
+                <div class="checkbox"></div>
+                <div>
+                    <div class="item-text">Configuração do secure_path</div>
+                    <div class="item-description">Restrição de caminhos seguros</div>
+                </div>
+            </div>
+            <div class="checklist-item" data-task="19">
+                <div class="checkbox"></div>
+                <div>
+                    <div class="item-text">Habilitação do requiretty</div>
+                    <div class="item-description">Maior segurança TTY</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="checklist-section">
+            <h2 class="section-title">
+                📊 Script de Monitoramento
+            </h2>
+            <div class="checklist-item" data-task="20">
+                <div class="checkbox"></div>
+                <div>
+                    <div class="item-text">Criação do monitoring.sh</div>
+                    <div class="item-description">Script em /usr/local/bin/</div>
+                </div>
+            </div>
+            <div class="checklist-item" data-task="21">
+                <div class="checkbox"></div>
+                <div>
+                    <div class="item-text">Implementação das métricas</div>
+                    <div class="item-description">CPU, RAM, Disk, Network, etc.</div>
+                </div>
+            </div>
+            <div class="checklist-item" data-task="22">
+                <div class="checkbox"></div>
+                <div>
+                    <div class="item-text">Correção do comando wall (Debian 13)</div>
+                    <div class="item-description">Usar echo com argumentos apropriados</div>
+                </div>
+            </div>
+            <div class="checklist-item" data-task="23">
+                <div class="checkbox"></div>
+                <div>
+                    <div class="item-text">Configuração do crontab</div>
+                    <div class="item-description">Execução a cada 10 minutos</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="checklist-section">
+            <h2 class="section-title">
+                ✅ Verificações e Testes
+            </h2>
+            <div class="checklist-item" data-task="24">
+                <div class="checkbox"></div>
+                <div>
+                    <div class="item-text">Verificação do AppArmor</div>
+                    <div class="item-description">aa-status deve mostrar perfis ativos</div>
+                </div>
+            </div>
+            <div class="checklist-item" data-task="25">
+                <div class="checkbox"></div>
+                <div>
+                    <div class="item-text">Criação do grupo user42</div>
+                    <div class="item-description">groupadd user42 e adicionar usuário</div>
+                </div>
+            </div>
+            <div class="checklist-item" data-task="26">
+                <div class="checkbox"></div>
+                <div>
+                    <div class="item-text">Teste de conexão SSH</div>
+                    <div class="item-description">ssh usuario@localhost -p 4242</div>
+                </div>
+            </div>
+            <div class="checklist-item" data-task="27">
+                <div class="checkbox"></div>
+                <div>
+                    <div class="item-text">Teste do script de monitoramento</div>
+                    <div class="item-description">Executar manualmente e verificar saída</div>
+                </div>
+            </div>
+            <div class="checklist-item" data-task="28">
+                <div class="checkbox"></div>
+                <div>
+                    <div class="item-text">Geração da assinatura final</div>
+                    <div class="item-description">shasum do arquivo .qcow2 para signature.txt</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="reset-btn" onclick="resetProgress()">🗑️ Reset</button>
+
+    <script>
+        // Carregar progresso salvo
+        function loadProgress() {
+            const savedProgress = localStorage.getItem('b2b-progress');
+            if (savedProgress) {
+                const progress = JSON.parse(savedProgress);
+                progress.forEach(taskId => {
+                    const item = document.querySelector(`[data-task="${taskId}"]`);
+                    if (item) {
+                        item.classList.add('completed');
+                        item.querySelector('.checkbox').classList.add('checked');
+                        item.querySelector('.checkbox').innerHTML = '✓';
+                    }
+                });
+            }
+            updateProgress();
+        }
+
+        // Salvar progresso
+        function saveProgress() {
+            const completed = [];
+            document.querySelectorAll('.checklist-item.completed').forEach(item => {
+                completed.push(item.dataset.task);
+            });
+            localStorage.setItem('b2b-progress', JSON.stringify(completed));
+        }
+
+        // Atualizar estatísticas
+        function updateProgress() {
+            const total = document.querySelectorAll('.checklist-item').length;
+            const completed = document.querySelectorAll('.checklist-item.completed').length;
+            const percentage = Math.round((completed / total) * 100);
+            
+            document.getElementById('totalProgress').textContent = percentage + '%';
+            document.getElementById('completedTasks').textContent = completed;
+            document.getElementById('remainingTasks').textContent = total - completed;
+        }
+
+        // Toggle item
+        function toggleItem(item) {
+            const checkbox = item.querySelector('.checkbox');
+            
+            if (item.classList.contains('completed')) {
+                item.classList.remove('completed');
+                checkbox.classList.remove('checked');
+                checkbox.innerHTML = '';
+            } else {
+                item.classList.add('completed');
+                checkbox.classList.add('checked');
+                checkbox.innerHTML = '✓';
+            }
+            
+            saveProgress();
+            updateProgress();
+        }
+
+        // Reset progresso
+        function resetProgress() {
+            if (confirm('Tem certeza que deseja resetar todo o progresso?')) {
+                localStorage.removeItem('b2b-progress');
+                document.querySelectorAll('.checklist-item').forEach(item => {
+                    item.classList.remove('completed');
+                    item.querySelector('.checkbox').classList.remove('checked');
+                    item.querySelector('.checkbox').innerHTML = '';
+                });
+                updateProgress();
+            }
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            loadProgress();
+            
+            document.querySelectorAll('.checklist-item').forEach(item => {
+                item.addEventListener('click', () => toggleItem(item));
+            });
+        });
+    </script>
+</body>
+</html>
