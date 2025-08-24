@@ -149,16 +149,10 @@ Encontrou um erro? Tem uma sugestão?
 Criado com ❤️ por **Marcella Arícia** para a comunidade brasileira da 42.
 
 - 📧 **Email:** marcella.aricia@live.com
-- 💼 **LinkedIn:** [seu-linkedin]([https://linkedin.com/in/seu-perfil](https://www.linkedin.com/in/marcella-aricia/))
-- 📰 **Medium:** [seu-medium]([https://medium.com/@seu-usuario](https://medium.com/@marcella-aricia))
+- 💼 **LinkedIn:** [Clique aqui](https://www.linkedin.com/in/marcella-aricia/)
+- 📰 **Medium:** [Clique aqui](https://medium.com/@marcella-aricia)
 
-## 🙏 **Agradecimentos**
-
-- 🏫 **42 School** pelo projeto desafiador
-- 🇧🇷 **Comunidade brasileira** pela colaboração
-- 🍎 **UTM Team** pela excelente ferramenta
-- 📖 **Debian Project** pela distribuição estável
-
+  
 ---
 
 ### ⭐ **Curtiu o projeto?**
