@@ -134,13 +134,7 @@ Encontrou um erro? Tem uma sugestão?
 - [ ] **Tracker para ft_containers**
 - [ ] **Hub completo** de projetos da 42
 
-## 📱 **Screenshots**
 
-### Desktop
-![Desktop View](https://via.placeholder.com/800x500/667eea/ffffff?text=Desktop+View)
-
-### Mobile
-![Mobile View](https://via.placeholder.com/400x700/667eea/ffffff?text=Mobile+View)
 
 ## 🏗️ **Tech Stack**
 
