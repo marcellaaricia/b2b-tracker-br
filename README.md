@@ -18,7 +18,7 @@ Este é um **tracker de progresso interativo** para te ajudar a acompanhar sua j
 
 ## 🚀 **Acesse agora**
 
-### 👉 [**b2b-tracker-br.pages.dev**](https://marcellaaricia.github.io/b2b-tracker-br/) 👈
+### 👉 [**b2b-tracker-br**](https://marcellaaricia.github.io/b2b-tracker-br/) 👈
 
 ## ✨ **Características**
 
